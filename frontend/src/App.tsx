@@ -33,6 +33,8 @@ function toSelectorAction(action: nearApi.transactions.Action) {
   }
 }
 
+type SelectorWalletAction = ReturnType<typeof toSelectorAction>
+
 function App() {
   const [selector, setSelector] = useState<WalletSelector | null>(null)
   const [modal, setModal] = useState<WalletSelectorModal | null>(null)
@@ -150,10 +152,16 @@ function App() {
       const walletActions = nearActions.map(toSelectorAction)
 
       const wallet = await selector.wallet()
-      await wallet.signAndSendTransaction({
+      const signAndSendWithMappedActions: (params: {
+        signerId: string
+        receiverId: string
+        actions: SelectorWalletAction[]
+      }) => Promise<unknown> = wallet.signAndSendTransaction as never
+
+      await signAndSendWithMappedActions({
         signerId: activeAccountId,
         receiverId: subAccountId,
-        actions: walletActions as unknown as Parameters<typeof wallet.signAndSendTransaction>[0]['actions'],
+        actions: walletActions,
       })
 
       const response = await fetch(`${BACKEND_URL}/api/store-key`, {
