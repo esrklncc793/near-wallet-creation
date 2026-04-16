@@ -29,7 +29,7 @@ Minimal full-stack NEAR implementation with:
 ### 1) Backend
 
 ```bash
-cd /home/runner/work/near-wallet-creation/near-wallet-creation/backend
+cd backend
 npm install
 npm run start
 ```
@@ -39,7 +39,7 @@ Runs on `http://localhost:3001`.
 ### 2) Frontend
 
 ```bash
-cd /home/runner/work/near-wallet-creation/near-wallet-creation/frontend
+cd frontend
 npm install
 npm run dev
 ```

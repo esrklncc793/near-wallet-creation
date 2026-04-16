@@ -7,10 +7,14 @@ const port = process.env.PORT || 3001
 app.use(cors())
 app.use(express.json())
 
-const storedAccounts = []
+const storeEvents = []
 
 app.post('/api/store-key', (req, res) => {
-  const { accountId, secretKey } = req.body ?? {}
+  if (!req.body || typeof req.body !== 'object') {
+    return res.status(400).json({ error: 'Request body is required.' })
+  }
+
+  const { accountId, secretKey } = req.body
 
   if (typeof accountId !== 'string' || typeof secretKey !== 'string') {
     return res.status(400).json({ error: 'accountId and secretKey are required strings.' })
@@ -34,9 +38,10 @@ app.post('/api/store-key', (req, res) => {
   // 3) Store ciphertext + iv + authTag in PostgreSQL columns (BYTEA/TEXT as needed).
   // 4) Keep encryption keys rotated and access-controlled; decrypt only when strictly needed.
 
-  storedAccounts.push({
+  // Store only non-sensitive metadata in memory for this sample implementation.
+  // In production, persist encrypted secret material to PostgreSQL and avoid plaintext storage.
+  storeEvents.push({
     accountId,
-    secretKey,
     storedAt: new Date().toISOString(),
   })
 
@@ -44,7 +49,7 @@ app.post('/api/store-key', (req, res) => {
 })
 
 app.get('/health', (_req, res) => {
-  res.json({ ok: true, stored: storedAccounts.length })
+  res.json({ ok: true, stored: storeEvents.length })
 })
 
 app.listen(port, () => {
