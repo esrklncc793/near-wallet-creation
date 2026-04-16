@@ -1,0 +1,43 @@
+.app {
+  width: min(680px, 100%);
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+h1 {
+  margin-bottom: 1rem;
+}
+
+label {
+  text-align: left;
+  font-weight: 600;
+}
+
+input,
+button {
+  font: inherit;
+  padding: 0.7rem 0.9rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d0d7de;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+.hint {
+  margin: 0.25rem 0 1rem;
+  font-size: 0.9rem;
+}
+
+.created {
+  font-weight: 700;
+}
